@@ -21,4 +21,14 @@ def dataframe(file_name, countries, years):
     return df, df_t
 
 
-countries = [""]
+countries = ["South Africa", "India", "Japan", "Australia", "China",
+             "United States", "Russian Federation", "United Kingdom",
+             "Brazil", "Canada", "France", "Sweden"]
+years = [str(i) for i in range(1990, 2016)]
+df, df_t = dataframe("electricity from oil,gas,coal.csv", countries, years)
+df_t.plot()
+plt.show()
+
+co, co_t = dataframe("co2 emission.csv", countries, years)
+co_t.plot()
+plt.show()
