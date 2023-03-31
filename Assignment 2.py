@@ -7,6 +7,7 @@ Created on Mon Mar 13 00:25:50 2023
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from stats import skew, kurtosis
 
 
 def dataframe(file_name, countries, years):
@@ -26,6 +27,7 @@ countries = ["India", "Japan", "Australia", "China", "United States",
              "Russian Federation", "United Kingdom"]
 years = [str(i) for i in range(1990, 2016)]
 df, df_t = dataframe("electricity from oil,gas,coal.csv", countries, years)
+
 df_t.plot()
 plt.show()
 
@@ -44,3 +46,7 @@ rn, rn_t = dataframe("Electricity from renewable ex hydro.csv", countries,
 hy, hy_t = dataframe("Electricity from hydro.csv", countries, years)
 rn.add(hy).plot.bar()
 plt.show()
+
+print(df_t.describe())
+print(skew(df_t))
+print(skew(co_t))
