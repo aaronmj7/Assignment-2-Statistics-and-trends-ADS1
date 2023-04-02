@@ -18,7 +18,6 @@ def dataframe(file_name, countries, years):
     df.dropna(how='any', thresh=100, axis=1, inplace=True)
     df.set_index(['Country Name'], inplace=True)
     df.index.rename("Country", inplace=True)
-    #df.columns = pd.to_datetime(df.columns)
     df.columns.name = "Year"
     df_t = df.transpose()
     df_t.dropna(how='all', axis=1, inplace=True)
@@ -34,17 +33,27 @@ def stat(df):
     return
 
 
-def plotdf(df, name):
-    ax = df.plot(subplots=True, figsize=(8, 9), fontsize=14)
-    ax[0].set_title(name, fontsize=20, fontweight='bold')
-    ax[-1].set_xlabel(str(df.index.name), fontsize=20)
-    for i in range(0, len(ax)):
-        ax[i].legend(fontsize=11.5)
+def plotdf(kind, df, name):
+    if kind == "line":
+        ax = df.plot(subplots=True, figsize=(8, 9), fontsize=18, grid=True)
+        ax[0].set_title(name, fontsize=20.5, fontweight='bold')
+        ax[-1].set_xlabel(str(df.index.name), fontsize=25)
+        for i in range(0, len(ax)):
+            ax[i].legend(fontsize=14)
+    elif kind == "bar":
+        ax = df.plot.bar(rot=40, figsize=(10, 9), fontsize=18, width=0.6,
+                         edgecolor='black')
+        ax.set_title(name, fontsize=22, fontweight='bold')
+        ax.set_xlabel(str(df.index.name), fontsize=28)
+        ax.legend(fontsize=23)
+    else:
+        print("Only 'line' or 'bar' plots available")
     plt.tight_layout()
     plt.show()
+    return
 
 
-countries = ["Belgium", "Denmark", "Finland", "India", "Japan", "South Africa",
+countries = ["Belgium", "Denmark", "Finland", "India", "Japan",
              "United Kingdom", "United States"]
 years = [str(i) for i in range(1994, 2015)]
 
@@ -54,9 +63,9 @@ co, co_t = dataframe("co2 emission per capita.csv", countries, years)
 stat(df_t)
 stat(co_t)
 
-plotdf(df_t, "Electicity Produced From oil, gas, coal (% of total)")
+plotdf("line", df_t, "Electicity Produced from Oil, Gas,Coal (% of total)")
 
-plotdf(co_t, "CO2 Emmission per capita")
+plotdf("line", co_t, "CO2 Emmission per capita")
 
 years = [str(i) for i in range(1994, 2015, 5)]
 
@@ -64,8 +73,7 @@ nu, nu_t = dataframe("electricity from nuclear.csv", countries, years)
 
 stat(nu_t)
 
-nu.plot.bar(rot=35)
-plt.show()
+plotdf("bar", nu, "Electicity Produced from Nuclear Sources (% of total)")
 
 rn, rn_t = dataframe("Electricity from renewable ex hydro.csv",
                      countries, years)
@@ -73,5 +81,5 @@ hy, hy_t = dataframe("Electricity from hydro.csv", countries, years)
 
 stat(rn_t.add(hy_t))
 
-rn.add(hy).plot.bar(rot=35)
-plt.show()
+plotdf("bar", rn.add(hy),
+       "Electicity Produced from Renewable Sources (% of total)")
