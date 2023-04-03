@@ -5,13 +5,18 @@ Created on Mon Mar 13 00:25:50 2023
 @author: aaron
 """
 
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from stats import skew, kurtosis
 
 
 def dataframe(file_name, countries, years):
+    """Function to read a csv file in world bank format, clean and slice it.
+    Returns the dataframe and transposed dataframe. Arguments:
+        Name/file path of a csv file.
+        A list of countries required.
+        A list of years required.
+    """
     df = pd.read_csv(file_name, skiprows=4)
     df.drop(["Country Code", "Indicator Code", "Indicator Name"], axis=1,
             inplace=True)
@@ -27,13 +32,26 @@ def dataframe(file_name, countries, years):
 
 
 def stat(df):
-    print(df.describe())
-    print("\nSkewness:\n", skew(df))
-    print("\nKurtosis:\n", kurtosis(df))
+    """Function to give a statistic overview of a dataframe.
+    Includes mean, std, min, 25%, 50%, 75%, max, skewness, kurtosis. Arguments:
+        A dataframe.
+    """
+    des = df.describe()
+    sk = skew(df)
+    kurt = kurtosis(df)
+    sk = pd.DataFrame([sk], columns=des.columns, index=["skewness"])
+    kurt = pd.DataFrame([kurt], columns=des.columns, index=["kurtosis"])
+    stat = pd.concat([des, sk, kurt])
+    print(stat)
     return
 
 
-def plotdf(kind, df, name):
+def plotdf(df, kind, name):
+    """Function to create a plot. Arguments:
+    A dataframe.
+    A kind of plot required.
+    Name of the plot.
+    """
     if kind == "line":
         ax = df.plot(subplots=True, figsize=(8, 9), fontsize=18, grid=True)
         ax[0].set_title(name, fontsize=20.5, fontweight='bold')
@@ -49,6 +67,7 @@ def plotdf(kind, df, name):
     else:
         print("Only 'line' or 'bar' plots available")
     plt.tight_layout()
+    plt.savefig((name + ".png"), dpi=500)
     plt.show()
     return
 
@@ -63,9 +82,9 @@ co, co_t = dataframe("co2 emission per capita.csv", countries, years)
 stat(df_t)
 stat(co_t)
 
-plotdf("line", df_t, "Electicity Produced from Oil, Gas,Coal (% of total)")
+plotdf(df_t, "line", "Electicity Produced from Oil, Gas,Coal (% of total)")
 
-plotdf("line", co_t, "CO2 Emmission per capita")
+plotdf(co_t, "line", "CO2 Emmission per capita")
 
 years = [str(i) for i in range(1994, 2015, 5)]
 
@@ -73,7 +92,7 @@ nu, nu_t = dataframe("electricity from nuclear.csv", countries, years)
 
 stat(nu_t)
 
-plotdf("bar", nu, "Electicity Produced from Nuclear Sources (% of total)")
+plotdf(nu, "bar", "Electicity Produced from Nuclear Sources (% of total)")
 
 rn, rn_t = dataframe("Electricity from renewable ex hydro.csv",
                      countries, years)
@@ -81,5 +100,5 @@ hy, hy_t = dataframe("Electricity from hydro.csv", countries, years)
 
 stat(rn_t.add(hy_t))
 
-plotdf("bar", rn.add(hy),
+plotdf(rn.add(hy), "bar",
        "Electicity Produced from Renewable Sources (% of total)")
