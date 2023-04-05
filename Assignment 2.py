@@ -11,8 +11,9 @@ from stats import skew, kurtosis
 
 
 def make_df1(file_name, countries, years):
-    """Function to read a csv file in world bank format, clean and slice it.
-    Returns the dataframe and transposed dataframe. Arguments:
+    """ Function to read a csv file in world bank format, clean and slice it.
+    Returns the dataframe and transposed dataframe.
+    Arguments:
         Name/file path of a csv file.
         A list of countries required.
         A list of years required.
@@ -48,8 +49,9 @@ def make_df1(file_name, countries, years):
 
 
 def read_df2(fname):
-    """Function to read a csv file in world in data format, .
-    Returns the dataframe. Arguments:
+    """ Function to read a csv file in world in data format, converts to
+    percentage and reverses column order. Returns the dataframe.
+    Arguments:
         Name/file path of a csv file.
     """
     # reading from csv
@@ -74,7 +76,7 @@ def read_df2(fname):
     df_wrld_percent = \
         df_wrld_percent.rename(columns=lambda x: x.replace(' (zero filled)',
                                                            ''))
-    # renaming one more column name without lambda function
+    # renaming one more column
     df_wrld_percent =\
         df_wrld_percent.rename(columns={"Other renewables excluding bioenergy":
                                         "Other Renewables"})
@@ -89,8 +91,10 @@ def read_df2(fname):
 
 
 def stat_df(df):
-    """Function to give a statistic overview of a dataframe.
-    Includes mean, std, min, 25%, 50%, 75%, max, skewness, kurtosis. Arguments:
+    """ Function to give a statistic overview of a dataframe.
+    Prints a dataframe that includes mean, std, min, 25%, 50%, 75%, max,
+    skewness, and kurtosis of the given df.
+    Arguments:
         A dataframe.
     """
     # using statistical tools
@@ -111,10 +115,11 @@ def stat_df(df):
 
 
 def plot_df(df, kind, name):
-    """Function to create a plot. Arguments:
-    A dataframe.
-    A kind of plot required.
-    Name of the plot.
+    """ Function to create a plot.
+    Arguments:
+        A dataframe.
+        A kind of plot required.
+        Name of the plot.
     """
     # using if else for different kinds of plot
     if kind == "line":
@@ -147,13 +152,13 @@ def plot_df(df, kind, name):
     elif kind == "area":
 
         # plotting
-        ax = df.plot.area(colormap='RdYlBu')
+        ax = df.plot.area(colormap='RdYlBu', figsize=(14, 9), fontsize=20)
         # setting title
-        ax.set_title(name, fontsize=15, fontweight='bold')
+        ax.set_title(name, fontsize=29, fontweight='bold')
         # setting xlabel
-        ax.set_xlabel(str(df.index.name), fontsize=28)
+        ax.set_xlabel(str(df.index.name), fontsize=27)
         # customising legend
-        plt.legend(loc='lower left', fontsize=10, bbox_to_anchor=(1, 0.1))
+        plt.legend(fontsize=20, bbox_to_anchor=(1, 1))
 
     else:
         print("Only 'line', 'bar' or 'area' plots available")
@@ -195,7 +200,8 @@ nuclear, nuclear_t = make_df1("electricity from nuclear.csv", countries, years)
 stat_df(nuclear_t)
 
 # plotting
-plot_df(nuclear, "bar", "Electicity Produced from Nuclear Sources (% of total)")
+plot_df(nuclear, "bar",
+        "Electicity Produced from Nuclear Sources (% of total)")
 
 # making dataframes
 ex_hydro, ex_hydro_t = make_df1("Electricity from renewable ex hydro.csv",
