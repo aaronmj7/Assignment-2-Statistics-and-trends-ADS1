@@ -186,8 +186,10 @@ countries = ["Australia", "Denmark", "Brazil", "Japan", "France", "Bangladesh",
 years = [str(i) for i in range(1994, 2015)]
 
 # making dataframes
-ogc, ogc_t = make_df1("electricity from oil,gas,coal.csv", countries, years)
-co, co_t = make_df1("co2 emission per capita.csv", countries, years)
+ogc, ogc_t = make_df1("API_EG.ELC.FOSL.ZS_DS2_en_csv_v2_5211704.csv",
+                      countries, years)
+co, co_t = make_df1("API_EN.ATM.CO2E.PC_DS2_en_csv_v2_5352882.csv",
+                    countries, years)
 
 # getting statistical overview
 stat_df(ogc_t)
@@ -201,7 +203,8 @@ plot_df(co_t, "line", "CO\u2082 emissions (metric tons per capita)")
 years = [str(i) for i in range(1994, 2015, 5)]
 
 # making dataframe
-nuclear, nuclear_t = make_df1("electricity from nuclear.csv", countries, years)
+nuclear, nuclear_t = make_df1("API_EG.ELC.NUCL.ZS_DS2_en_csv_v2_5342426.csv",
+                              countries, years)
 
 # getting statistical overview
 stat_df(nuclear_t)
@@ -211,9 +214,10 @@ plot_df(nuclear, "bar",
         "Electicity Produced from Nuclear Sources (% of total)")
 
 # making dataframes
-ex_hydro, ex_hydro_t = make_df1("Electricity from renewable ex hydro.csv",
+ex_hydro, ex_hydro_t = make_df1("API_EG.ELC.RNWX.ZS_DS2_en_csv_v2_5211766.csv",
                                 countries, years)
-hydro, hydro_t = make_df1("Electricity from hydro.csv", countries, years)
+hydro, hydro_t = make_df1("API_EG.ELC.HYRO.ZS_DS2_en_csv_v2_4912365.csv",
+                          countries, years)
 
 # adding to get df of all renewable sources
 renewable = ex_hydro.add(hydro)
