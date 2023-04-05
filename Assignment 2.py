@@ -195,7 +195,7 @@ stat_df(co_t)
 
 # ploting line plots
 plot_df(ogc_t, "line", "Electicity Produced from Oil, Gas,Coal (% of total)")
-plot_df(co_t, "line", "CO2 Emmission per capita")
+plot_df(co_t, "line", "CO\u2082 emissions (metric tons per capita)")
 
 # changing years for better bar graph
 years = [str(i) for i in range(1994, 2015, 5)]
