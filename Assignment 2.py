@@ -179,7 +179,7 @@ countries = ["Australia", "Denmark", "Brazil", "Japan", "France", "Bangladesh",
 years = [str(i) for i in range(1994, 2015)]
 
 # making dataframes
-ogc, ogc_t = make_df1("eelectricity from oil,gas,coal.csv", countries, years)
+ogc, ogc_t = make_df1("electricity from oil,gas,coal.csv", countries, years)
 co, co_t = make_df1("co2 emission per capita.csv", countries, years)
 
 # getting statistical overview
