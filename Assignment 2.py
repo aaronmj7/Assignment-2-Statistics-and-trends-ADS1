@@ -122,7 +122,18 @@ def plot_df(df, kind, name):
         Name of the plot.
     """
     # using if else for different kinds of plot
-    if kind == "line":
+    if kind == "area":
+
+        # plotting
+        ax = df.plot.area(colormap='RdYlBu', figsize=(14, 9), fontsize=20)
+        # setting title
+        ax.set_title(name, fontsize=29, fontweight='bold')
+        # setting xlabel
+        ax.set_xlabel(str(df.index.name), fontsize=27)
+        # customising legend
+        plt.legend(fontsize=20, bbox_to_anchor=(1, 0.75))
+
+    elif kind == "line":
 
         # styles for line plot
         styles = ['>-' for i in range(len(df.columns))]
@@ -149,29 +160,25 @@ def plot_df(df, kind, name):
         # customising legend
         ax.legend(fontsize=23)
 
-    elif kind == "area":
-
-        # plotting
-        ax = df.plot.area(colormap='RdYlBu', figsize=(14, 9), fontsize=20)
-        # setting title
-        ax.set_title(name, fontsize=29, fontweight='bold')
-        # setting xlabel
-        ax.set_xlabel(str(df.index.name), fontsize=27)
-        # customising legend
-        plt.legend(fontsize=20, bbox_to_anchor=(1, 1))
-
     else:
-        print("Only 'line', 'bar' or 'area' plots available")
+        print("Only 'area', 'line' or 'bar' plots available")
 
     # removing unwanted whitespaces
     plt.tight_layout()
 
     # svaing the plot
-    plt.savefig((name + ".png"), dpi=500)
+    plt.savefig((name + ".png"), dpi=500, bbox_inches="tight")
 
     plt.show()
     return
 
+
+# making dataframe
+source_df = read_df2("electricity-prod-source-stacked.csv")
+
+# plotting
+plot_df(source_df, "area",
+        "Electricity Produced from each Source (% of total)")
 
 # listing required countries and years
 countries = ["Australia", "Denmark", "Brazil", "Japan", "France", "Bangladesh",
@@ -218,11 +225,3 @@ stat_df(renewable_t)
 # plotting
 plot_df(renewable, "bar",
         "Electicity Produced from Renewable Sources (% of total)")
-
-
-# making dataframe
-source_df = read_df2("electricity-prod-source-stacked.csv")
-
-# plotting
-plot_df(source_df, "area",
-        "Electricity Produced from each Source (% of total)")
